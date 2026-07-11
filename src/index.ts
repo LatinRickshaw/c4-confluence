@@ -90,8 +90,9 @@ resolver.define('tagDiagramElement', async (req) => {
     mxCellId: string;
     tag: ElementTagInput;
   };
+  const { spaceKey } = req.context as { spaceKey: string };
   try {
-    const result = await tagDiagramElement(pageId, mxCellId, tag);
+    const result = await tagDiagramElement(spaceKey, pageId, mxCellId, tag);
     return { ok: true as const, ...result };
   } catch (err) {
     console.error('tagDiagramElement failed', {

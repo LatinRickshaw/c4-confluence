@@ -374,11 +374,13 @@ export function ModelExplorer() {
           ))}
         </>
       ) : (
-        <LandscapeView
-          elements={overview?.elements ?? []}
-          relationships={overview?.relationships ?? []}
-          onElementClick={handleLandscapeClick}
-        />
+        <div style={{ overflow: 'auto', maxWidth: '100%', maxHeight: '70vh' }}>
+          <LandscapeView
+            elements={overview?.elements ?? []}
+            relationships={overview?.relationships ?? []}
+            onElementClick={handleLandscapeClick}
+          />
+        </div>
       )}
 
       {selectedElement && overview && (

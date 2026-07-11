@@ -13,4 +13,6 @@ export interface DrawioDiagramResult {
   attachmentId?: string;
   attachmentVersion?: number;
   xml?: string;
+  /** Set when the page has more than one .drawio/.xml attachment - only the first is ever used. */
+  warning?: string;
 }

@@ -10,6 +10,7 @@ interface DrawioDiagramResult {
   title?: string;
   attachmentId?: string;
   xml?: string;
+  warning?: string;
 }
 
 interface PendingAttachmentWrite {
@@ -174,8 +175,10 @@ function App() {
         setHistory((prev) => [...prev, pageId]);
         setPageId(data.targetPageId);
         await loadPage(data.targetPageId);
+      } else if (data.element) {
+        setDrillDownDetail(data.element);
       } else {
-        setDrillDownDetail(data.element ?? null);
+        setError('This shape is linked to an element that no longer exists in the model.');
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : String(err));
@@ -239,6 +242,7 @@ function App() {
               <p>
                 Found <strong>{result.title}</strong> (attachment id {result.attachmentId})
               </p>
+              {result.warning && <p style={{ color: '#8a6d00' }}>⚠ {result.warning}</p>}
               <DrawioEmbed
                 key={`${pageId}:${reloadToken}`}
                 xml={result.xml}

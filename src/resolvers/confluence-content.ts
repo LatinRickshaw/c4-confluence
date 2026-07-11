@@ -106,5 +106,9 @@ export async function getFirstDrawioDiagram(pageId: string): Promise<DrawioDiagr
     attachmentId: attachment.id,
     attachmentVersion: attachment.version,
     xml,
+    warning:
+      attachments.length > 1
+        ? `This page has ${attachments.length} .drawio attachments; only "${attachment.title}" is used.`
+        : undefined,
   };
 }

@@ -1,6 +1,28 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { invoke } from '@forge/bridge';
 import { updateAttachmentXml } from '../lib/confluence-write';
+
+/** Mirrors wouldCreateCycle in src/lib/hierarchy.ts - the backend still validates authoritatively. */
+function getDescendantIds(elements: ModelElement[], rootId: string): Set<string> {
+  const childrenByParent = new Map<string, string[]>();
+  for (const el of elements) {
+    if (el.parentId) {
+      childrenByParent.set(el.parentId, [...(childrenByParent.get(el.parentId) ?? []), el.id]);
+    }
+  }
+
+  const descendants = new Set<string>();
+  const queue = [...(childrenByParent.get(rootId) ?? [])];
+  while (queue.length > 0) {
+    const id = queue.shift()!;
+    if (descendants.has(id)) {
+      continue;
+    }
+    descendants.add(id);
+    queue.push(...(childrenByParent.get(id) ?? []));
+  }
+  return descendants;
+}
 
 const C4_TYPES = ['Person', 'SoftwareSystem', 'Container', 'Component', 'Code'];
 
@@ -100,6 +122,24 @@ export function TaggingPanel({ pageId, onApplied }: TaggingPanelProps) {
 
   const selectedCell = cells.find((c) => c.mxCellId === selectedCellId);
 
+  const effectiveTargetId =
+    linkMode === 'existing' && existingElementId ? existingElementId : selectedCell?.c4ModelId;
+
+  const parentOptions = useMemo(() => {
+    if (!effectiveTargetId) {
+      return elements;
+    }
+    const excluded = getDescendantIds(elements, effectiveTargetId);
+    excluded.add(effectiveTargetId);
+    return elements.filter((el) => !excluded.has(el.id));
+  }, [elements, effectiveTargetId]);
+
+  useEffect(() => {
+    if (parentModelId && !parentOptions.some((el) => el.id === parentModelId)) {
+      setParentModelId('');
+    }
+  }, [parentModelId, parentOptions]);
+
   const handleSelectCell = (mxCellId: string) => {
     setSelectedCellId(mxCellId);
     setSavedMessage(null);
@@ -154,10 +194,14 @@ export function TaggingPanel({ pageId, onApplied }: TaggingPanelProps) {
         c4Type,
         description: description || undefined,
         technology: technology || undefined,
-        tags: tagsInput
-          .split(',')
-          .map((t) => t.trim())
-          .filter((t) => t.length > 0),
+        tags: Array.from(
+          new Set(
+            tagsInput
+              .split(',')
+              .map((t) => t.trim())
+              .filter((t) => t.length > 0)
+          )
+        ),
         external,
         parentModelId: parentModelId || undefined,
       };
@@ -308,7 +352,7 @@ export function TaggingPanel({ pageId, onApplied }: TaggingPanelProps) {
             Parent element:{' '}
             <select value={parentModelId} onChange={(e) => setParentModelId(e.target.value)}>
               <option value="">None</option>
-              {elements.map((el) => (
+              {parentOptions.map((el) => (
                 <option key={el.id} value={el.id}>
                   {el.name} ({el.type})
                 </option>

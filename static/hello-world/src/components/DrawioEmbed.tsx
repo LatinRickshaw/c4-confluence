@@ -82,6 +82,11 @@ export function DrawioEmbed({
             const elementId = parseDrillDownLink(message.href);
             if (elementId) {
               onDrillDown?.(elementId);
+            } else {
+              // Not one of our drill-down links - e.g. a real hyperlink the user added via
+              // draw.io's own "Edit Link". suppressNewWindows stopped draw.io from opening it
+              // itself, so without this fallback a legitimate link would silently do nothing.
+              window.open(message.href, (message.target as string | undefined) || '_blank');
             }
           }
           break;
