@@ -1,0 +1,39 @@
+modules:
+  macro:
+    - key: c4-confluence-viewer
+      resource: main
+      resolver:
+        function: resolver
+      title: C4 Model Viewer
+      description: Renders a draw.io C4 diagram as a navigable model view.
+      config:
+        resource: main
+        title: Choose diagram
+  confluence:spacePage:
+    - key: c4-confluence-model-explorer
+      resource: main
+      resolver:
+        function: resolver
+      title: C4 Model Explorer
+      route: c4-model-explorer
+  function:
+    - key: resolver
+      handler: index.handler
+resources:
+  - key: main
+    path: static/hello-world/build
+permissions:
+  scopes:
+    - read:confluence-content.all
+    - read:attachment:confluence
+    - write:confluence-file
+    - storage:app
+  external:
+    frames:
+      - address: https://embed.diagrams.net
+app:
+  runtime:
+    name: nodejs24.x
+    memoryMB: 256
+    architecture: arm64
+  id: ari:cloud:ecosystem::app/3f01b0d1-34ce-4784-9f68-035bc8c853e7

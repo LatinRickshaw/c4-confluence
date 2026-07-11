@@ -1,0 +1,37 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm -v)",
+      "Bash(forge --version)",
+      "Bash(npm install *)",
+      "Bash(forge settings *)",
+      "Bash(forge whoami *)",
+      "Bash(forge login *)",
+      "Bash(forge create *)",
+      "Bash(forge --help)",
+      "Bash(forge developer-spaces *)",
+      "Bash(set -e)",
+      "Bash(echo \"exit:$?\")",
+      "Bash(npm run *)",
+      "Bash(forge lint *)",
+      "Bash(forge deploy *)",
+      "Bash(forge install *)",
+      "Bash(npx tsc *)",
+      "Bash(forge logs *)",
+      "WebSearch",
+      "WebFetch(domain:community.developer.atlassian.com)",
+      "WebFetch(domain:developer.atlassian.com)",
+      "WebFetch(domain:go.atlassian.com)",
+      "Bash(npm view *)",
+      "Bash(npx jest *)",
+      "Bash(python3 -)",
+      "Bash(uuidgen)",
+      "WebFetch(domain:www.drawio.com)",
+      "Bash(chmod +x /Users/christian/Projects/latinRickshaw/c4-confluence/.husky/pre-commit)",
+      "Bash(git config *)",
+      "Bash(git add *)",
+      "Bash(npx lint-staged *)",
+      "Bash(git reset *)"
+    ]
+  }
+}

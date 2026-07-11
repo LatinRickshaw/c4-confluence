@@ -1,0 +1,6 @@
+node_modules
+build
+dist
+static/hello-world/build
+static/hello-world/node_modules
+package-lock.json

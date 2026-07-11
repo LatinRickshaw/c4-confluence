@@ -1,0 +1,45 @@
+{
+  "name": "confluence-macro-custom-ui",
+  "version": "1.1.19",
+  "main": "index.js",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "test": "jest",
+    "lint": "eslint . --ext .ts,.tsx",
+    "lint:fix": "eslint . --ext .ts,.tsx --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{js,jsx,json,md,yml,yaml}": [
+      "prettier --write"
+    ]
+  },
+  "devDependencies": {
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-react": "^7.34.1",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "@typescript-eslint/eslint-plugin": "^7.8.0",
+    "@typescript-eslint/parser": "^7.8.0",
+    "prettier": "^3.2.5",
+    "husky": "^9.0.11",
+    "lint-staged": "^15.2.2",
+    "typescript": "^5.4.5",
+    "@types/node": "^20.12.7",
+    "jest": "^30.0.0",
+    "ts-jest": "^29.4.0",
+    "@types/jest": "^30.0.0"
+  },
+  "dependencies": {
+    "@forge/api": "^4.0.0",
+    "@forge/resolver": "2.0.0",
+    "@xmldom/xmldom": "^0.9.10"
+  }
+}
